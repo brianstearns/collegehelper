@@ -2,31 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>College Helper</title>
-  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>College Helper</h1>
-  <form id="collegeForm">
-    <label for="gpa">GPA:</label>
-    <input type="text" id="gpa" name="gpa" required />
-
-    <label for="sat">SAT Score:</label>
-    <input type="text" id="sat" name="sat" required />
-
-    <button type="submit">Find Colleges</button>
-  </form>
-
-  <div id="results"></div>
-
-  <hr />
-
-  <h2>Ask CollegeBot</h2>
-  <textarea id="userInput" placeholder="Ask me anything..."></textarea>
+  <h1>Ask AI About Colleges</h1>
+  <input type="text" id="question" placeholder="e.g. What are good CS schools in NY?" />
   <button onclick="askAI()">Ask</button>
-  <div id="chatResponse"></div>
+  <pre id="response"></pre>
 
-  <script src="script.js"></script>
+  <script>
+    async function askAI() {
+      const question = document.getElementById("question").value;
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question })
+      });
+
+      const data = await res.json();
+      document.getElementById("response").textContent = data.answer || "No response";
+    }
+  </script>
 </body>
 </html>
