@@ -19,6 +19,31 @@
       <button type="submit">Find Colleges</button>
     </form>
 
+    <div id="chatbox" style="margin-top: 40px;">
+        <h2>💬 Ask the College Helper</h2>
+        <textarea id="chat-input" placeholder="Ask me anything..." rows="3"></textarea>
+        <button onclick="askChat()">Ask</button>
+        <div id="chat-response" style="margin-top: 10px; white-space: pre-wrap;"></div>
+    </div>
+
+    <script>
+    async function askChat() {
+        const input = document.getElementById("chat-input").value;
+        const responseBox = document.getElementById("chat-response");
+        responseBox.innerText = "Thinking...";
+
+        const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input }),
+        });
+
+        const data = await res.json();
+        responseBox.innerText = data.reply || "Something went wrong.";
+    }
+    </script>
+
+
     <div id="results" class="results"></div>
   </div>
 
