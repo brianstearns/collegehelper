@@ -1,0 +1,20 @@
+[
+  {
+    "name": "State University",
+    "avgGPA": 3.5,
+    "avgSAT": 1150,
+    "location": "NY",
+    "type": "Public",
+    "clubs": ["Chess", "Robotics", "Theatre"],
+    "programs": ["Computer Science", "Psychology", "Business"]
+  },
+  {
+    "name": "Tech Institute",
+    "avgGPA": 3.9,
+    "avgSAT": 1420,
+    "location": "CA",
+    "type": "Private",
+    "clubs": ["Hack Club", "Drama", "Volunteering"],
+    "programs": ["Engineering", "AI", "Game Design"]
+  }
+]

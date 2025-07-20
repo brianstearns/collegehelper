@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>College Helper</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🎓 College Helper</h1>
+    <form id="college-form">
+      <label for="gpa">GPA:</label>
+      <input type="number" id="gpa" step="0.01" required />
+
+      <label for="sat">SAT Score:</label>
+      <input type="number" id="sat" required />
+
+      <button type="submit">Find Colleges</button>
+    </form>
+
+    <div id="results" class="results"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('college-form');
+    const resultsDiv = document.getElementById('results');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const gpa = parseFloat(document.getElementById('gpa').value);
+      const sat = parseInt(document.getElementById('sat').value);
+
+      const res = await fetch('colleges.json');
+      const colleges = await res.json();
+
+      const matched = colleges.map(college => {
+        let level = 'Match';
+        if (gpa >= college.avgGPA + 0.3 && sat >= college.avgSAT + 100) {
+          level = 'Safety';
+        } else if (gpa < college.avgGPA - 0.2 || sat < college.avgSAT - 100) {
+          level = 'Reach';
+        }
+        return { ...college, level };
+      });
+
+      displayResults(matched);
+    });
+
+    function displayResults(colleges) {
+      resultsDiv.innerHTML = '<h2>Your Matches:</h2>';
+      colleges.forEach(college => {
+        const div = document.createElement('div');
+        div.className = 'college';
+        div.innerHTML = `
+          <h3>${college.name}</h3>
+          <p><strong>Level:</strong> ${college.level}</p>
+          <p>Avg GPA: ${college.avgGPA}, Avg SAT: ${college.avgSAT}</p>
+          <p><strong>Programs:</strong> ${college.programs.join(', ')}</p>
+          <p><strong>Clubs:</strong> ${college.clubs.join(', ')}</p>
+        `;
+        resultsDiv.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
